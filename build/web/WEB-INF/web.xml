@@ -1,0 +1,21 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.4"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http:/java.sun.com/dtd/web-app_2_3.dtd">
+  <servlet>
+    <servlet-name>OrderFormEN</servlet-name>
+    <servlet-class>gov.usa.orderform.OrderFormController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OrderFormES</servlet-name>
+    <servlet-class>gov.usa.orderform.OrderFormController_ES</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>OrderFormEN</servlet-name>
+    <url-pattern>/servlet/OrderForm</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OrderFormES</servlet-name>
+    <url-pattern>/servlet/OrderFormES</url-pattern>
+  </servlet-mapping>
+</web-app>
