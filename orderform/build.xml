@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ant build file for USA.gov Print Copy Order Form
+-->
+<project name="USA.gov Order Form Application buildfile" default="buildall" basedir=".">
+
+    <property name="java_src" value="src"/>
+    <property name="build_dir" value="build"/>
+    <property name="webcontent_dir" value="WebContent"/>
+
+    <target name="buildall" depends="clean, init, build_jar, build_war">
+    </target>
+		
+    <target name="build" depends="build_jar, build_war">
+    </target>
+		
+    <target name="init">
+		<mkdir dir="${build_dir}/java"/>
+		<mkdir dir="${build_dir}/web"/>
+    </target>
+
+    <target name="build_jar">
+        <javac destdir="${build_dir}/java" source="1.5" srcdir="${java_src}/">
+            <classpath>
+                <fileset dir="${webcontent_dir}/WEB-INF/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+            <include name="**/*.java"/>
+        </javac>
+		<copy file="${webcontent_dir}/WEB-INF/config/log4j.properties" todir="${build_dir}/java/gov/usa/orderform" />
+		<jar basedir="${build_dir}/java" destfile="${build_dir}/java/orderform.jar" includes="gov/**"/>
+    </target>
+		
+	
+    <target name="build_war">
+	<copy todir="${build_dir}/web">
+		<fileset dir="${webcontent_dir}" />
+	</copy>
+	<copy file="${build_dir}/java/orderform.jar" todir="${build_dir}/web/WEB-INF/lib" />
+	<copy file="${webcontent_dir}/WEB-INF/config/log4j.properties" todir="${build_dir}/web/WEB-INF/classes" />
+      <copy file="${webcontent_dir}/WEB-INF/config/LocalSettings.properties" todir="${build_dir}/web/WEB-INF/classes" />
+      <copy file="${webcontent_dir}/WEB-INF/config/LocalSettings_es.properties" todir="${build_dir}/web/WEB-INF/classes" />
+      <copy file="${webcontent_dir}/index.html" todir="${build_dir}/web" />
+      <copy file="${webcontent_dir}/index_es.html" todir="${build_dir}/web" />
+      <copy file="${webcontent_dir}/error.jsp" todir="${build_dir}/web" />
+      <copy file="${webcontent_dir}/error_es.jsp" todir="${build_dir}/web" />
+      <copy file="${webcontent_dir}/includes/errorMessage.jsp" todir="${build_dir}/web/includes" />
+      <copy file="${webcontent_dir}/thankyou.html" todir="${build_dir}/web" />
+      <copy file="${webcontent_dir}/thankyou_es.html" todir="${build_dir}/web" />
+	<copy todir="${build_dir}/web/WEB-INF/classes">
+		<fileset dir="${build_dir}/java">
+			<include name="*.class" />
+		</fileset>
+	</copy>
+	<jar basedir="${build_dir}/web" destfile="${build_dir}/orderform.war" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${build_dir}"/>
+    </target>
+
+</project>
