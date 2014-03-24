@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Last modified: January 18, 2006
+Created by: Russell O'Neill
+Ant build file for USA.gov Dynamic Applications
+-->
+<project name="FistGov Feedback Application buildfile" default="buildall" basedir=".">
+
+    <property name="ear_dir" value="."/>
+    <property name="java_src" value="src"/>
+    <property name="build_dir" value="build"/>
+    <property name="webcontent_dir" value="WebContent"/>
+
+    <target name="buildall" depends="clean, init, build_feedback_jar, build_feedback_war">
+    </target>
+		
+		<target name="build" depends="build_feedback_jar, build_feedback_war">
+		</target>
+		
+		<target name="init">
+			  <mkdir dir="${build_dir}/java"/>
+			  <mkdir dir="${build_dir}/web"/>
+		</target>
+
+    <target name="build_feedback_jar">
+        <javac destdir="${build_dir}/java" source="1.4" srcdir="${java_src}/">
+            <classpath>
+                <fileset dir="${webcontent_dir}/WEB-INF/lib">
+                    <include name="*.jar"/>
+                    <exclude name="SuggestALink.jar"/>
+                </fileset>
+            </classpath>
+            <include name="**/*.java"/>
+        </javac>
+		<copy file="${webcontent_dir}/WEB-INF/config/log4j.properties" todir="${build_dir}/java/gov/firstgov/suggestalink" />
+		<jar basedir="${build_dir}/java" destfile="${build_dir}/java/fgfeedback.jar" includes="gov/**"/>
+    </target>
+		
+		<target name="build_feedback_war">
+			<copy todir="${build_dir}/web">
+				<fileset dir="${webcontent_dir}" />
+			</copy>
+			<copy file="${build_dir}/java/fgfeedback.jar" todir="${build_dir}/web/WEB-INF/lib" />
+			<copy file="${webcontent_dir}/WEB-INF/config/log4j.properties" todir="${build_dir}/web/WEB-INF/classes" />
+			<copy todir="${build_dir}/web/WEB-INF/classes">
+				<fileset dir="${build_dir}/java">
+					<include name="*.class" />
+				</fileset>
+			</copy>
+			<jar basedir="${build_dir}/web" destfile="${build_dir}/feedback.war" />
+		</target>
+
+    <target name="clean">
+        <delete dir="${build_dir}"/>
+    </target>
+
+</project>
