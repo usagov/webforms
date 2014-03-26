@@ -59,6 +59,7 @@ public class EmailAFriendServlet extends HttpServlet  {
         response.setContentType("text/html");
         
 		String linkToSend = StringUtils.truncate(request.getParameter("lts"), Constants.LTS_MAXLENGTH); //the link to send, allowed MAXIMUM length = 1024
+        linkToSend = linkToSend.replaceAll("(\\r|\\n)", ""); //CLRF response splitting vulnerability fix
         String toAddress = StringUtils.trim(request.getParameter("toad")); //the to address(es) in the meessage, allowed MAXIMUM email addresses = 100 emails
         String fromAddress = StringUtils.trim(request.getParameter("frad")); //the from address in the message, allowed MAXIMUM email addresses = 100 emails
         String fromName = StringUtils.EMPTY;
