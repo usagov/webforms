@@ -17,6 +17,9 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
+
+import org.apache.commons.lang.StringEscapeUtils;
+
 public abstract class EmailAFriendImpl {
 
 	/**
@@ -64,6 +67,7 @@ public abstract class EmailAFriendImpl {
     public void setLinkToSend(String lts)
     {
         	linkToSend = lts;
+            linkToSend = StringEscapeUtils.escapeHtml(linkToSend);                 //Malicious HTML protection
     }
 
 	/**
